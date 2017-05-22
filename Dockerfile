@@ -60,6 +60,10 @@ RUN sed \
 RUN sed \
     -i '/application-port.*/a application-port-ssl=8443' /opt/sonatype/nexus/etc/org.sonatype.nexus.cfg
 
+### Add the correct jetty file...
+RUN sed \
+    -i 's/jetty-http\.xml/jetty-http\.xml,\$\{karaf\.etc\}\/jetty-https\.xml/' /opt/sonatype/nexus/etc/org.sonatype.nexus.cfg
+
 RUN useradd -r -u 200 -m -c "nexus role account" -d ${NEXUS_DATA} -s /bin/false nexus
 
 VOLUME ${NEXUS_DATA}
